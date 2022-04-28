@@ -7,13 +7,13 @@ const ApiError = require('../exceptions/api-error');
 
 
 class UserService {
-    async registration(username, password, todos) {
+    async registration(username, password) {
         const candidate = await UserModel.findOne({ username })
         if (candidate) {
             throw ApiError.BadRequest('Пользователь с таким именем уже существует')
         }
         const hashPassword = await bcrypt.hashSync(password, 3)
-        const user = await UserModel.create({ username, password: hashPassword, _id: mongoose.Types.ObjectId()}, todos)
+        const user = await UserModel.create({ username, password: hashPassword, _id: mongoose.Types.ObjectId()})
 
         const userDto = new UserDto(user)
         const tokens = tokenService.generateTokens({ ...userDto })
