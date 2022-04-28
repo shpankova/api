@@ -12,8 +12,8 @@ class UserController {
                 return next(ApiError.BadRequest('Ошибка при регистрации', errors.array()))
             }
 
-            const { username, password, todos } = req.body
-            const userData = await userService.registration(username, password, todos)
+            const { username, password } = req.body
+            const userData = await userService.registration(username, password)
             res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
             return res.json(userData)
 
